@@ -29,8 +29,8 @@ public class Comment {
 
     public Comment(CommentRequestDto requestDto, User user, Post post) {
         this.content = requestDto.getContent();
-        this.user = user;
-        this.post = post;
+        setUser(user);
+        setPost(post);
     }
 
     public Comment(Comment comment){
@@ -40,11 +40,11 @@ public class Comment {
         this.post = comment.getPost();
     }
 
-    public void setUser(User user){
+    private void setUser(User user){
         this.user = user;
     }
 
-    public void setPost(Post post){
+    private void setPost(Post post){
         this.post = post;
 
         if(post.getComments().contains(this))

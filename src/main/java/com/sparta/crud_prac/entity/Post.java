@@ -28,20 +28,22 @@ public class Post extends TimeStamped {
     @Column(nullable = false)
     private String content;
 
-//    @Column(nullable = false)
-//    private Long userid;
-
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private User user;
 
-    @OneToMany(mappedBy = "post")
+    // cascase = 게시글이 삭제되면 해당 게시글에 달려있던 댓글까지 같이 소멸.
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>();
 
     public Post(PostCURequestDto requestDto, User user) {
         this.title = requestDto.getTitle();
         this.username = user.getUsername();
         this.content = requestDto.getContent();
+        setUser(user);
+    }
+
+    private void setUser(User user){
         this.user = user;
     }
 
