@@ -1,9 +1,9 @@
 package com.sparta.crud_prac.controller;
 
 
-import com.sparta.crud_prac.dto.PostCURequestDto;
-import com.sparta.crud_prac.dto.PostDeleteResponseDto;
-import com.sparta.crud_prac.dto.PostResponseDto;
+import com.sparta.crud_prac.dto.post.PostCURequestDto;
+import com.sparta.crud_prac.dto.post.PostDeleteResponseDto;
+import com.sparta.crud_prac.dto.post.PostResponseDto;
 import com.sparta.crud_prac.service.PostService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

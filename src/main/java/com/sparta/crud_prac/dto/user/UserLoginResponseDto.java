@@ -1,13 +1,13 @@
-package com.sparta.crud_prac.dto;
+package com.sparta.crud_prac.dto.user;
 
 import lombok.Getter;
 
 @Getter
-public class PostDeleteResponseDto {
+public class UserLoginResponseDto {
     private String message;
     private int status;
 
-    public PostDeleteResponseDto(String message, int status) {
+    public UserLoginResponseDto(String message, int status) {
         this.message = message;
         this.status = status;
     }

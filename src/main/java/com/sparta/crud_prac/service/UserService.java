@@ -1,54 +1,42 @@
 package com.sparta.crud_prac.service;
 
-import com.sparta.crud_prac.dto.UserLoginRequestDto;
-import com.sparta.crud_prac.dto.UserLoginResponseDto;
-import com.sparta.crud_prac.dto.UserSignupRequestDto;
-import com.sparta.crud_prac.dto.UserSignupResponseDto;
+import com.sparta.crud_prac.dto.user.UserLoginRequestDto;
+import com.sparta.crud_prac.dto.user.UserLoginResponseDto;
+import com.sparta.crud_prac.dto.user.UserSignupRequestDto;
+import com.sparta.crud_prac.dto.user.UserSignupResponseDto;
 import com.sparta.crud_prac.entity.User;
+import com.sparta.crud_prac.entity.UserRoleEnum;
 import com.sparta.crud_prac.jwt.JwtUtil;
+import com.sparta.crud_prac.repository.CommentRepository;
+import com.sparta.crud_prac.repository.PostRepository;
 import com.sparta.crud_prac.repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Service
-@RequiredArgsConstructor
-public class UserService {
-    private final UserRepository userRepository;
-    private final JwtUtil jwtUtil;
+public class UserService extends SuperService {
+    @Autowired
+    public UserService(PostRepository postRepository, UserRepository userRepository, CommentRepository commentRepository, JwtUtil jwtUtil) {
+        super(postRepository, userRepository, commentRepository, jwtUtil);
+    }
 
     // 회원가입 서비스 메서드
     public UserSignupResponseDto signup(UserSignupRequestDto requestDto) {
-        // 아이디 중복 체크
-        Optional<User> user = userRepository.findByUsername(requestDto.getUsername());
-        // isPresent() : 값이 있으면 true를 반환하고 그렇지 않으면 false를 반환합니다.
-        if(user.isPresent()){
-            return new UserSignupResponseDto("중복된 아이디가 존재합니다!", HttpStatus.NOT_FOUND.value());
-        }
-
-        userRepository.save(new User(requestDto));
+        validateIsDuplicate(requestDto.getUsername());              // 아이디 중복 체크
+        UserRoleEnum role = isAdmin(requestDto);                    // 가입자의 권한 체크
+        userRepository.save(new User(requestDto, role));
         return new UserSignupResponseDto("회원가입에 성공하셨습니다!", HttpStatus.OK.value());
     }
 
-
     @Transactional(readOnly = true)
     public UserLoginResponseDto login(UserLoginRequestDto requestDto, HttpServletResponse response) {
-        String username = requestDto.getUsername();
-        String password = requestDto.getPassword();
-
-        // 아이디 존재 유무 체크
-        User user = userRepository.findByUsername(username).orElseThrow(()-> new NullPointerException("아이디가 존재하지 않습니다."));
-        // 비밀번호 체크
-        if(!user.getPassword().equals(password)){
-            return new UserLoginResponseDto("비밀번호가 틀립니다.", HttpStatus.NOT_FOUND.value());
-        }
-
+        User user = validateIsUsers(requestDto.getUsername());       // 아이디 존재 유무 체크
+        validatePassword(requestDto.getPassword(), user);           // 비밀번호 체크
         // username 과 email로 토큰을 생성해서 Authorization_Header와 함께 response에 HEADER를 날린다.
-        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getUsername(), user.getEmail()));
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getUsername(), user.getRole()));
         return new UserLoginResponseDto("로그인에 성공하셨습니다!", HttpStatus.OK.value());
     }
 }

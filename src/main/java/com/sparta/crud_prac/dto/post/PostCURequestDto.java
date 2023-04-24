@@ -1,4 +1,4 @@
-package com.sparta.crud_prac.dto;
+package com.sparta.crud_prac.dto.post;
 
 import lombok.Getter;
 

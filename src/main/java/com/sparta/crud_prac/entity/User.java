@@ -1,6 +1,6 @@
 package com.sparta.crud_prac.entity;
 
-import com.sparta.crud_prac.dto.UserSignupRequestDto;
+import com.sparta.crud_prac.dto.user.UserSignupRequestDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "USER_ID")
     private Long id;
 
 //    @Size(min = 4, max = 10)    // 길이 최소 4자이상 10자 이하
@@ -30,9 +31,14 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    public User(UserSignupRequestDto sign) {
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private UserRoleEnum role;
+
+    public User(UserSignupRequestDto sign, UserRoleEnum role) {
         this.username = sign.getUsername();
         this.password = sign.getPassword();
         this.email = sign.getEmail();
+        this.role = role;
     }
 }

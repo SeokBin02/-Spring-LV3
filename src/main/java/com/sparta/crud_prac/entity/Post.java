@@ -1,10 +1,13 @@
 package com.sparta.crud_prac.entity;
 
 
-import com.sparta.crud_prac.dto.PostCURequestDto;
+import com.sparta.crud_prac.dto.post.PostCURequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
@@ -13,6 +16,7 @@ import lombok.NoArgsConstructor;
 public class Post extends TimeStamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "POST_ID")
     private Long id;
 
     @Column(nullable = false)
@@ -24,14 +28,21 @@ public class Post extends TimeStamped {
     @Column(nullable = false)
     private String content;
 
-    @Column(nullable = false)
-    private Long userid;
+//    @Column(nullable = false)
+//    private Long userid;
 
-    public Post(PostCURequestDto requestDto, Long user_id, String username) {
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    private User user;
+
+    @OneToMany(mappedBy = "post")
+    private List<Comment> comments = new ArrayList<>();
+
+    public Post(PostCURequestDto requestDto, User user) {
         this.title = requestDto.getTitle();
-        this.username = username;
+        this.username = user.getUsername();
         this.content = requestDto.getContent();
-        this.userid = user_id;
+        this.user = user;
     }
 
     public void update(PostCURequestDto requestDto) {
