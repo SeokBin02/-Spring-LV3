@@ -1,6 +1,9 @@
 package com.sparta.crud_prac.jwt;
 
 import com.sparta.crud_prac.entity.UserRoleEnum;
+import com.sparta.crud_prac.repository.UserRepository;
+import com.sparta.crud_prac.security.UserDetailsImpl;
+import com.sparta.crud_prac.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
@@ -8,6 +11,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -29,6 +35,8 @@ public class JwtUtil {
     private String secretKey;
     private Key key;
     private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+    private final UserDetailsServiceImpl userDetailsService;
+
 
     @PostConstruct
     public void init() {
@@ -81,4 +89,10 @@ public class JwtUtil {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
 
+
+    // 클라이언트에게서 입력받은 username으로 DB의 user의 유무를 파악한 후 해당 user의 정보로 token 생성.
+    public Authentication createAuthentication(String username) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+    }
 }

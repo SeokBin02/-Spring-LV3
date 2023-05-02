@@ -1,6 +1,5 @@
 package com.sparta.crud_prac.dto.user;
 
-import com.sparta.crud_prac.entity.UserRoleEnum;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

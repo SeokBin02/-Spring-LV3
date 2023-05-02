@@ -27,6 +27,12 @@ public class SuperService {
         return validateIsUsers(jwtUtil.getUserInfoFromToken(token).getSubject());
     }
 
+    // 토큰 존재 여부 체크
+    protected void validateIsToken(String token){
+        if(token == null || !jwtUtil.validateToken(token))
+            throw new CustomException(ExceptionEnum.TOKEN_NOT_FOUND);
+    }
+
     // 회원 존재 유무
     protected User validateIsUsers(String username) {
         return userRepository.findByUsername(username).orElseThrow(
@@ -64,12 +70,6 @@ public class SuperService {
         }
     }
 
-    // 토큰 존재 여부 체크
-    protected void validateIsToken(String token){
-        if(token == null || !jwtUtil.validateToken(token))
-            throw new CustomException(ExceptionEnum.TOKEN_NOT_FOUND);
-    }
-
     // 아이디 중복 체크
     protected void validateIsDuplicate(String username) {
         if(userRepository.findByUsername(username).isPresent())
@@ -94,5 +94,4 @@ public class SuperService {
             return UserRoleEnum.USER;
         }
     }
-
 }

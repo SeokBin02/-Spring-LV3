@@ -17,7 +17,7 @@ public class PostResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private List<Comment> comments = new ArrayList<>();
-
+//    private List<CommentDto>
     public PostResponseDto(Post post) {
         this.title = post.getTitle();
         this.username = post.getUsername();

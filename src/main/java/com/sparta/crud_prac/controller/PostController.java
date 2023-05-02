@@ -4,9 +4,11 @@ package com.sparta.crud_prac.controller;
 import com.sparta.crud_prac.dto.post.PostCURequestDto;
 import com.sparta.crud_prac.dto.post.PostDeleteResponseDto;
 import com.sparta.crud_prac.dto.post.PostResponseDto;
+import com.sparta.crud_prac.security.UserDetailsImpl;
 import com.sparta.crud_prac.service.PostService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,8 +28,8 @@ public class PostController {
 
     // 게시글 작성 API
     @PostMapping("/posts")
-    public PostResponseDto createPost(@RequestBody PostCURequestDto requestDto, HttpServletRequest request) {
-        return postService.createPost(requestDto, request);
+    public PostResponseDto createPost(@RequestBody PostCURequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return postService.createPost(requestDto, userDetails);
     }
 
 
@@ -40,14 +42,14 @@ public class PostController {
 
     // 선택한 게시글 수정 API
     @PutMapping("/posts/{id}")
-    public PostResponseDto updatePost(@PathVariable Long id, @RequestBody PostCURequestDto requestDto, HttpServletRequest request) {
-        return postService.updatePost(id, requestDto, request);
+    public PostResponseDto updatePost(@PathVariable Long id, @RequestBody PostCURequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return postService.updatePost(id, requestDto, userDetails);
     }
 
 
     // 선택한 게시글 삭제 API
     @DeleteMapping("/posts/{id}")
-    public PostDeleteResponseDto deletePost(@PathVariable Long id, HttpServletRequest request) {
-        return postService.deletePost(id, request);
+    public PostDeleteResponseDto deletePost(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return postService.deletePost(id, userDetails);
     }
 }
