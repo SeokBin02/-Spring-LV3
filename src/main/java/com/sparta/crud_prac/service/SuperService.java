@@ -5,6 +5,7 @@ import com.sparta.crud_prac.entity.*;
 import com.sparta.crud_prac.exception.customException.CustomException;
 import com.sparta.crud_prac.jwt.JwtUtil;
 import com.sparta.crud_prac.repository.CommentRepository;
+import com.sparta.crud_prac.repository.HeartRepository;
 import com.sparta.crud_prac.repository.PostRepository;
 import com.sparta.crud_prac.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ public class SuperService {
     protected final PostRepository postRepository;
     protected final UserRepository userRepository;
     protected final CommentRepository commentRepository;
+    protected final HeartRepository heartRepository;
     protected final JwtUtil jwtUtil;
     private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 

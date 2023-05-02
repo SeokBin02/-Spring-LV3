@@ -30,8 +30,7 @@ public class JwtAuthFilter extends OncePerRequestFilter{
 
         String token = jwtUtil.resolveToken(request);   // request로 부터 token을 받아옴
 
-
-        if(token != null ){
+        if(token != null){
             if(!jwtUtil.validateToken(token)){
                 // 토큰이 유효하지 않으면 예외 처리
                 throw new CustomException(ExceptionEnum.INVALID_TOKEN);

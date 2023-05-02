@@ -8,6 +8,7 @@ import com.sparta.crud_prac.entity.Post;
 import com.sparta.crud_prac.entity.User;
 import com.sparta.crud_prac.jwt.JwtUtil;
 import com.sparta.crud_prac.repository.CommentRepository;
+import com.sparta.crud_prac.repository.HeartRepository;
 import com.sparta.crud_prac.repository.PostRepository;
 import com.sparta.crud_prac.repository.UserRepository;
 import com.sparta.crud_prac.security.UserDetailsImpl;
@@ -24,8 +25,8 @@ import java.util.stream.Collectors;
 @Service
 public class PostService extends SuperService {
     @Autowired
-    public PostService(PostRepository postRepository, UserRepository userRepository, CommentRepository commentRepository, JwtUtil jwtUtil) {
-        super(postRepository, userRepository, commentRepository, jwtUtil);
+    public PostService(PostRepository postRepository, UserRepository userRepository, CommentRepository commentRepository, HeartRepository heartRepository, JwtUtil jwtUtil) {
+        super(postRepository, userRepository, commentRepository, heartRepository, jwtUtil);
     }
 
     // 전체 게시글 목록 조회 API

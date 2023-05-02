@@ -1,6 +1,7 @@
 package com.sparta.crud_prac.dto.post;
 
 import com.sparta.crud_prac.entity.Comment;
+import com.sparta.crud_prac.entity.Heart;
 import com.sparta.crud_prac.entity.Post;
 import lombok.Getter;
 
@@ -17,17 +18,19 @@ public class PostResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private List<Comment> comments = new ArrayList<>();
-//    private List<CommentDto>
+    private int hearts;
     public PostResponseDto(Post post) {
         this.title = post.getTitle();
         this.username = post.getUsername();
         this.content = post.getContent();
         this.createdAt = post.getCreatedAt();
         this.modifiedAt = post.getModifiedAt();
+        this.hearts = post.getHeartCount();
         this.comments = post.getComments()
                 .stream()
                 .sorted(Comparator.comparing(Comment::getId).reversed())
                 .map(Comment::new)
                 .collect(Collectors.toList());
+
     }
 }

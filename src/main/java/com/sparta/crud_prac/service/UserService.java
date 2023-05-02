@@ -8,6 +8,7 @@ import com.sparta.crud_prac.entity.User;
 import com.sparta.crud_prac.entity.UserRoleEnum;
 import com.sparta.crud_prac.jwt.JwtUtil;
 import com.sparta.crud_prac.repository.CommentRepository;
+import com.sparta.crud_prac.repository.HeartRepository;
 import com.sparta.crud_prac.repository.PostRepository;
 import com.sparta.crud_prac.repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,8 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserService extends SuperService {
     @Autowired
-    public UserService(PostRepository postRepository, UserRepository userRepository, CommentRepository commentRepository, JwtUtil jwtUtil) {
-        super(postRepository, userRepository, commentRepository, jwtUtil);
+    public UserService(PostRepository postRepository, UserRepository userRepository, CommentRepository commentRepository, HeartRepository heartRepository, JwtUtil jwtUtil) {
+        super(postRepository, userRepository, commentRepository, heartRepository, jwtUtil);
     }
 
     // 회원가입 서비스 메서드

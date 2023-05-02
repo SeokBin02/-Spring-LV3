@@ -8,6 +8,7 @@ import com.sparta.crud_prac.entity.Post;
 import com.sparta.crud_prac.entity.User;
 import com.sparta.crud_prac.jwt.JwtUtil;
 import com.sparta.crud_prac.repository.CommentRepository;
+import com.sparta.crud_prac.repository.HeartRepository;
 import com.sparta.crud_prac.repository.PostRepository;
 import com.sparta.crud_prac.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,8 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class CommentService extends SuperService {
     @Autowired
-    public CommentService(PostRepository postRepository, UserRepository userRepository, CommentRepository commentRepository, JwtUtil jwtUtil) {
-        super(postRepository, userRepository, commentRepository, jwtUtil);
+    public CommentService(PostRepository postRepository, UserRepository userRepository, CommentRepository commentRepository, HeartRepository heartRepository, JwtUtil jwtUtil) {
+        super(postRepository, userRepository, commentRepository, heartRepository, jwtUtil);
     }
 
     // 댓글 작성 API
