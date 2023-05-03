@@ -6,8 +6,10 @@ import lombok.Getter;
 public class CommentResponseDto {
     private Long id;
     private String content;
+    private int heartCount;
 
     public CommentResponseDto(Comment comment) {
         this.content = comment.getContent();
+        this.heartCount = comment.getHeartCount();
     }
 }

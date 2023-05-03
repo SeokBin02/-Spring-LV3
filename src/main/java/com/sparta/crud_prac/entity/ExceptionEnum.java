@@ -16,7 +16,9 @@ public enum ExceptionEnum {
     INVALID_TOKEN(HttpStatus.NOT_FOUND, "토큰이 유효하지 않습니다."),
     NOT_ALLOW_AUTHORIZATIONS(HttpStatus.FORBIDDEN, "권한이 없습니다."),
     INVALID_INPUT(HttpStatus.BAD_REQUEST, "관리자 암호를 잘못 입력하셨습니다."),
-    INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "비밀번호를 잘못 입력하셨습니다.");
+    INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "비밀번호를 잘못 입력하셨습니다."),
+    INVALID_INPUT_PASSWORD(HttpStatus.BAD_REQUEST, "Password 형식에 맞지 않습니다."),
+    INVALID_INPUT_USERNAME(HttpStatus.BAD_REQUEST, "Username 형식에 맞지 않습니다.");
 
     private final HttpStatus status;
     private final String message;

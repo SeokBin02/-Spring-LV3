@@ -28,6 +28,8 @@ public class UserService extends SuperService {
     public UserSignupResponseDto signup(UserSignupRequestDto requestDto) {
         validateIsDuplicate(requestDto.getUsername());              // 아이디 중복 체크
         UserRoleEnum role = isAdmin(requestDto);                    // 가입자의 권한 체크
+        User user = new User(requestDto, role);
+        User.inputIsMatches(user.getUsername(), user.getPassword()); // 입력 조건 정규식 체크
         userRepository.save(new User(requestDto, role));
         return new UserSignupResponseDto("회원가입에 성공하셨습니다!", HttpStatus.OK.value());
     }

@@ -11,9 +11,11 @@ import com.sparta.crud_prac.repository.CommentRepository;
 import com.sparta.crud_prac.repository.HeartRepository;
 import com.sparta.crud_prac.repository.PostRepository;
 import com.sparta.crud_prac.repository.UserRepository;
+import com.sparta.crud_prac.security.UserDetailsImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,30 +28,30 @@ public class CommentService extends SuperService {
 
     // 댓글 작성 API
     @Transactional
-    public CommentResponseDto createComment(Long id, CommentRequestDto requestDto, HttpServletRequest request) {
-        User user = getUserInfoFromToken(request);               // 토큰 유효성 검사
+    public CommentResponseDto createComment(Long id, CommentRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+//        User user = getUserInfoFromToken(userDetails);               // 토큰 유효성 검사
         Post post = validateIsPosts(id);                         // 게시글 존재 유무 검사
-        Comment comment = new Comment(requestDto, user, post);
+        Comment comment = new Comment(requestDto, userDetails.getUser(), post);
         commentRepository.save(comment);
         return new CommentResponseDto(comment);
     }
 
     // 댓글 수정 API
     @Transactional
-    public CommentResponseDto updateCommnet(Long id, CommentRequestDto requestDto, HttpServletRequest request) {
-        User user = getUserInfoFromToken(request);                  // 토큰 유효성 검사
+    public CommentResponseDto updateCommnet(Long id, CommentRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+//        User user = getUserInfoFromToken(request);                  // 토큰 유효성 검사
         Comment comment = validateIsComments(id);                   // 댓글 유무 확인
-        isCheckAuthorFromComments(user, comment);                   // 작성자 일치 여부 체크
+        isCheckAuthorFromComments(userDetails.getUser(), comment);                   // 작성자 일치 여부 체크
         comment.update(requestDto);                                 // 댓글 수정 및 dirty checking
         return new CommentResponseDto(comment);
     }
 
     // 댓글 삭제 API
     @Transactional
-    public CommentDeleteResponseDto deleteComment(Long id, HttpServletRequest request) {
-        User user = getUserInfoFromToken(request);                  // 토큰의 유효성 검사
+    public CommentDeleteResponseDto deleteComment(Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+//        User user = getUserInfoFromToken(request);                  // 토큰의 유효성 검사
         Comment comment = validateIsComments(id);                   // 선택한 댓글의 DB 저장 유무 확인
-        isCheckAuthorFromComments(user, comment);                   // 댓글 작성자 일치 여부 체크
+        isCheckAuthorFromComments(userDetails.getUser(), comment);                   // 댓글 작성자 일치 여부 체크
         commentRepository.delete(comment);                          // 댓글 삭제
         return new CommentDeleteResponseDto("삭제를 성공했습니다.", HttpStatus.OK.value());
     }
